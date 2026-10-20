@@ -5,7 +5,7 @@ metadata:
   labels:
     app: {{ .Release.Name }}
     scenario: {{ .Values.scenario | quote }}
-    chart-change-test: "true"
+    test-main-source: "v1.0"
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -18,11 +18,13 @@ spec:
         scenario: {{ .Values.scenario | quote }}
       annotations:
         scenario: {{ .Values.scenario | quote }}
+        {{- if .Values.environment }}
+        environment: {{ .Values.environment | quote }}
+        {{- end }}
     spec:
       containers:
-      - name: {{ .Chart.Name }}
+      - name: nginx
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports:
-        - name: http
-          containerPort: 8080
-          protocol: TCP
+        - containerPort: 80

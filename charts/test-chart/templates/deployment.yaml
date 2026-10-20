@@ -4,16 +4,19 @@ metadata:
   name: {{ .Release.Name }}
   labels:
     app: {{ .Release.Name }}
+    chart-version: "v2.0"
     scenario: {{ .Values.scenario | quote }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       app: {{ .Release.Name }}
+    chart-version: "v2.0"
   template:
     metadata:
       labels:
         app: {{ .Release.Name }}
+    chart-version: "v2.0"
         scenario: {{ .Values.scenario | quote }}
       annotations:
         scenario: {{ .Values.scenario | quote }}

@@ -4,29 +4,25 @@ metadata:
   name: {{ .Release.Name }}
   labels:
     app: {{ .Release.Name }}
-    chart-version: "v2.0"
     scenario: {{ .Values.scenario | quote }}
+    chart-change-test: "true"
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       app: {{ .Release.Name }}
-    chart-version: "v2.0"
   template:
     metadata:
       labels:
         app: {{ .Release.Name }}
-    chart-version: "v2.0"
         scenario: {{ .Values.scenario | quote }}
       annotations:
         scenario: {{ .Values.scenario | quote }}
-        {{- if .Values.environment }}
-        environment: {{ .Values.environment | quote }}
-        {{- end }}
     spec:
       containers:
-      - name: nginx
+      - name: {{ .Chart.Name }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports:
-        - containerPort: 80
+        - name: http
+          containerPort: 8080
+          protocol: TCP
